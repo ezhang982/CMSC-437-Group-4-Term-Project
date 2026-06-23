@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In-Flight Infotainment System</title>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .app-header {
+            background-color: #1e293b;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .airline-brand {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .back-btn, .footer-nav-btn, .menu-btn {
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .back-btn {
+            background-color: #475569;
+            color: white;
+            padding: 0.5rem 1rem;
+        }
+
+        .attendant-btn {
+            background-color: #e2e8f0;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .attendant-btn.active {
+            background-color: #ef4444;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .alert-banner {
+            background-color: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .main-menu {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 2rem auto 0 auto;
+        }
+
+        .menu-btn {
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            padding: 2rem 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .menu-btn:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        .view-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            max-width: 1000px;
+            margin: 2rem auto;
+        }
+
+        .app-content {
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .app-bottom-footer {
+            background-color: #0f172a;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .footer-nav-btn {
+            background-color: #334155;
+            color: white;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .footer-nav-btn:hover {
+            background-color: #475569;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // --- SUB-VIEW COMPONENT PLACEHOLDERS ---
+        function HomeView({ setView }) {
+            return (
+                <div className="main-menu">
+                    <h2>Welcome Aboard</h2>
+                    <p>Select a service below to begin your in-flight experience.</p>
+                    <div className="menu-grid">
+                        <button onClick={() => setView('movies')} className="menu-btn">🎬 Movies</button>
+                        <button onClick={() => setView('shows')} className="menu-btn">📺 TV Shows</button>
+                        <button onClick={() => setView('music')} className="menu-btn">🎵 Music</button>
+                        <button onClick={() => setView('shop')} className="menu-btn">🛍️ Duty-Free Shop</button>
+                        <button onClick={() => setView('services')} className="menu-btn">🛎️ Passenger Services</button>
+                        <button onClick={() => setView('flight-info')} className="menu-btn">✈️ Flight Info</button>
+                    </div>
+                </div>
+            );
+        }
+
+        function MoviesView() { return <div className="view-container"><h3>Movies Catalog</h3><p>[Team Member Section: Implement browsing, metadata, and playback streaming error flows here.]</p></div>; }
+        function ShowsView() { return <div className="view-container"><h3>TV Shows Catalog</h3><p>[Team Member Section: Implement catalog and favoriting/bookmarking functionality here.]</p></div>; }
+        function MusicView() { return <div className="view-container"><h3>Music Playlists</h3><p>[Team Member Section: Implement curated playlists and music selections here.]</p></div>; }
+        function ShopView() { return <div className="view-container"><h3>Duty-Free Shopping</h3><p>[Team Member Section: Implement product catalog, add to cart, and checkout processing here.]</p></div>; }
+        function ServicesView() { return <div className="view-container"><h3>Passenger Services</h3><p>[Team Member Section: Implement phone calls, view invoice, and feedback forms here.]</p></div>; }
+        function FlightInfoView() { return <div className="view-container"><h3>Flight Information</h3><p>[Team Member Section: Implement real-time tracking map, altitude, speed, and crew message logs here.]</p></div>; }
+
+        // --- MAIN APP COMPONENT ---
+        function App() {
+            const [currentView, setView] = useState('home');
+            const [attendantCalled, setAttendantCalled] = useState(false);
+
+            return (
+                <div className="app-container">
+                    <header className="app-header">
+                        <div className="header-left">
+                            {currentView !== 'home' && (
+                                <button onClick={() => setView('home')} className="back-btn">⬅ Home</button>
+                            )}
+                            <span className="airline-brand">[Airline Company]</span>
+                        </div>
+                        
+                        <div className="header-right">
+                            <button 
+                                onClick={() => setAttendantCalled(!attendantCalled)} 
+                                className={`attendant-btn ${attendantCalled ? 'active' : ''}`}
+                            >
+                                {attendantCalled ? '🔔 Attendant Called' : '🛎️ Call Attendant'}
+                            </button>
+                            <div className="profile-icon">👤 Guest</div>
+                        </div>
+                    </header>
+
+                    <main className="app-content">
+                        {attendantCalled && (
+                            <div className="alert-banner">
+                                A flight attendant has been notified and will be with you shortly.
+                            </div>
+                        )}
+
+                        {/* Dynamic View Swapping */}
+                        {currentView === 'home' && <HomeView setView={setView} />}
+                        {currentView === 'movies' && <MoviesView />}
+                        {currentView === 'shows' && <ShowsView />}
+                        {currentView === 'music' && <MusicView />}
+                        {currentView === 'shop' && <ShopView />}
+                        {currentView === 'services' && <ServicesView />}
+                        {currentView === 'flight-info' && <FlightInfoView />}
+                    </main>
+
+                    <footer className="app-bottom-footer">
+                        <button onClick={() => setView('home')} className="footer-nav-btn">🏠 Main Menu</button>
+                        <button onClick={() => setView('flight-info')} className="footer-nav-btn">✈️ My Trip</button>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render the App into the DOM
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
