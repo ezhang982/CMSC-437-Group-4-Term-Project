@@ -161,7 +161,7 @@
     <script type="text/babel">
         const { useState } = React;
 
-        // --- SUB-VIEW COMPONENT PLACEHOLDERS ---
+        // --- Main Menu & Subview Components ---
         function HomeView({ setView }) {
             return (
                 <div className="main-menu">
@@ -179,6 +179,7 @@
             );
         }
 
+        // Functions for each page, where their contents will be implemented
         function MoviesView() { return <div className="view-container"><h3>Movies Catalog</h3><p>[Team Member Section: Implement browsing, metadata, and playback streaming error flows here.]</p></div>; }
         function ShowsView() { return <div className="view-container"><h3>TV Shows Catalog</h3><p>[Team Member Section: Implement catalog and favoriting/bookmarking functionality here.]</p></div>; }
         function MusicView() { return <div className="view-container"><h3>Music Playlists</h3><p>[Team Member Section: Implement curated playlists and music selections here.]</p></div>; }
@@ -186,7 +187,7 @@
         function ServicesView() { return <div className="view-container"><h3>Passenger Services</h3><p>[Team Member Section: Implement phone calls, view invoice, and feedback forms here.]</p></div>; }
         function FlightInfoView() { return <div className="view-container"><h3>Flight Information</h3><p>[Team Member Section: Implement real-time tracking map, altitude, speed, and crew message logs here.]</p></div>; }
 
-        // --- MAIN APP COMPONENT ---
+        // --- Main App Functionality ---
         function App() {
             const [currentView, setView] = useState('home');
             const [attendantCalled, setAttendantCalled] = useState(false);
@@ -219,7 +220,7 @@
                             </div>
                         )}
 
-                        {/* Dynamic View Swapping */}
+                        {/* Page Navigation w/ Dynamic View Swapping */}
                         {currentView === 'home' && <HomeView setView={setView} />}
                         {currentView === 'movies' && <MoviesView />}
                         {currentView === 'shows' && <ShowsView />}
