@@ -602,6 +602,7 @@
                         <button onClick={() => setView('shop')} className="menu-btn">🛍️ Duty-Free Shop</button>
                         <button onClick={() => setView('services')} className="menu-btn">🛎️ Passenger Services</button>
                         <button onClick={() => setView('flight-info')} className="menu-btn">✈️ Flight Info</button>
+                                                <button onClick={() => setView('use-cases')} className="menu-btn">📋 Use Case Scenarios</button>
                     </div>
                 </div>
             );
@@ -912,6 +913,235 @@
                 </div>
             );
         }
+        // --- Use Case Scenarios View ---
+        function UseCaseScenariosView() {
+            const scenarios = [
+                {
+                    id: 1,
+                    title: "Use Case Scenario 1: Guest Access",
+                    requirements: "(Requirements a.ii)",
+                    name: "Access System as Guest",
+                    actor: "Passenger",
+                    precondition: "The passenger's device is connected to the aircraft's Wi-Fi network, and the app has loaded in the browser.",
+                    mainFlow: [
+                        "The passenger opens the app on their personal device (phone, tablet, or laptop).",
+                        "The system displays a welcome screen with two options: Create Profile and Continue as Guest.",
+                        "The passenger taps Continue as Guest.",
+                        "The system grants access to all core features without requiring any login credentials.",
+                        "The passenger is taken to the home screen of the infotainment system."
+                    ],
+                    postcondition: "The passenger is logged in as a guest and can use the system for the duration of the flight.",
+                    alternateFlow: "If the Wi-Fi connection is lost, the system displays a connection error message and prompts the passenger to reconnect."
+                },
+                {
+                    id: 2,
+                    title: "Use Case Scenario 2: Create and Manage a Passenger Profile",
+                    requirements: "(Requirements a.i, a.iii)",
+                    name: "Create Passenger Profile",
+                    actor: "Passenger",
+                    precondition: "The passenger has opened the app and is on the welcome screen.",
+                    mainFlow: [
+                        "The passenger selects Create Profile on the welcome screen.",
+                        "The system displays a profile creation form requesting a display name and optional preferences (e.g., preferred language, content genre).",
+                        "The passenger enters their display name and selects preferred content genres (e.g., action, comedy).",
+                        "The passenger taps Save Profile.",
+                        "The system saves the profile and associates it with the current flight session.",
+                        "The passenger is directed to the home screen with their name displayed in the top corner.",
+                        "Throughout the session, the system remembers the passenger's preferences and applies them to content recommendations."
+                    ],
+                    postcondition: "A passenger profile is created, and preferences are retained for the duration of the flight session.",
+                    alternateFlow: null
+                },
+                {
+                    id: 3,
+                    title: "Use Case Scenario 3: Browse and Play Entertainment Content",
+                    requirements: "(Requirements b.i, b.ii, b.iv, b.v)",
+                    name: "Browse and Play a Movie",
+                    actor: "Passenger",
+                    precondition: "The passenger is logged in (as a guest or with a profile) and is on the home screen.",
+                    mainFlow: [
+                        "The passenger navigates to the Entertainment section from the home screen.",
+                        "The system displays a catalog of available movies, TV shows, and music, organized by category.",
+                        "The system highlights curated playlists, trending content, and destination attraction highlights at the top.",
+                        "The passenger browses the movie catalog and taps on a title of interest.",
+                        "The system displays the content detail page showing the synopsis, cast, duration, and audience rating.",
+                        "The passenger taps Play.",
+                        "The system begins streaming the selected movie to the passenger's device.",
+                        "Playback controls (pause, rewind, fast-forward, volume) are displayed on screen."
+                    ],
+                    postcondition: "The selected movie is playing on the passenger's device.",
+                    alternateFlow: "If the selected content is unavailable due to a streaming error, the system displays an error message and suggests similar titles."
+                },
+                {
+                    id: 4,
+                    title: "Use Case Scenario 4: Bookmark Content for Later Viewing",
+                    requirements: "(Requirements b.iii)",
+                    name: "Favorite a TV Show",
+                    actor: "Passenger",
+                    precondition: "The passenger has a profile created and is browsing the entertainment catalog.",
+                    mainFlow: [
+                        "The passenger browses the TV shows section and finds a show they want to watch later.",
+                        "The passenger taps the bookmark/heart icon on the show's listing.",
+                        "The system adds the show to the passenger's My List / favorites collection.",
+                        "The system briefly displays a confirmation message: Added to My List.",
+                        "The passenger can access their saved content at any time from the My List section of the home screen."
+                    ],
+                    postcondition: "The selected TV show is saved in the passenger's favorites and is accessible for the remainder of the flight session.",
+                    alternateFlow: "If the passenger is browsing as a guest, the system notifies them that bookmarking requires a profile and offers to create one."
+                },
+                {
+                    id: 5,
+                    title: "Use Case Scenario 5: View Real-Time Flight Information",
+                    requirements: "(Requirements c.i, c.ii, c.iv)",
+                    name: "Check Current Flight Status",
+                    actor: "Passenger",
+                    precondition: "The passenger is logged in and on the home screen. The aircraft is in flight.",
+                    mainFlow: [
+                        "The passenger taps the Flight Info section from the home screen navigation menu.",
+                        "The system displays a real-time flight information dashboard showing: current location, current altitude, current speed, estimated time of arrival (ETA), and local time at departure and arrival destinations.",
+                        "The passenger taps View Map to see a visual flight path map.",
+                        "The system renders an interactive map showing the aircraft's current position along the route from origin to destination.",
+                        "The passenger can zoom in or out on the map."
+                    ],
+                    postcondition: "The passenger has up-to-date information about the flight's current status and geographic position.",
+                    alternateFlow: "If live flight data is temporarily unavailable, the system displays the last known values with a timestamp and a Refreshing indicator."
+                },
+                {
+                    id: 6,
+                    title: "Use Case Scenario 6: View Announcements and Safety Information",
+                    requirements: "(Requirements c.iii, c.v, c.vi)",
+                    name: "Access Flight Announcements and Safety Details",
+                    actor: "Passenger",
+                    precondition: "The passenger is on the Flight Info screen.",
+                    mainFlow: [
+                        "The passenger taps the Announcements tab within the Flight Info section.",
+                        "The system displays a feed of important announcements, including weather updates and safety alerts issued by the crew.",
+                        "The passenger taps Crew Messages to view a text transcript of all messages broadcast by the pilot and flight attendants (supporting accessibility for deaf passengers).",
+                        "The passenger taps Safety Information.",
+                        "The system displays a safety information page showing the locations of emergency exits, safety instructions, and relevant procedures."
+                    ],
+                    postcondition: "The passenger has accessed all relevant safety and announcement information in text form.",
+                    alternateFlow: "If no new announcements have been made, the system displays No new announcements at this time in the announcements feed."
+                },
+                {
+                    id: 7,
+                    title: "Use Case Scenario 7: Order Food and Beverages",
+                    requirements: "(Requirements d.ii)",
+                    name: "Order a Meal and Beverage",
+                    actor: "Passenger",
+                    precondition: "The passenger is on the home screen. The food and beverage service is currently active.",
+                    mainFlow: [
+                        "The passenger taps Food and Beverage from the home screen.",
+                        "The system displays the in-flight menu categorized into Meals, Snacks, and Drinks.",
+                        "The passenger browses the menu and taps an item to view its description and price.",
+                        "The passenger taps Add to Order for selected items (e.g., a sandwich and a juice).",
+                        "The system updates the order summary panel showing all selected items and the running total.",
+                        "The passenger taps Review Order to confirm their selections.",
+                        "The passenger taps Checkout and selects Pay by Credit Card.",
+                        "The system prompts the passenger to enter credit card details on a secure payment form.",
+                        "The passenger enters their card information and taps Confirm Payment.",
+                        "The system processes the payment and displays a confirmation screen with an order number and estimated delivery time.",
+                        "The passenger can track the order status (e.g., Preparing, On the way) from the My Orders section."
+                    ],
+                    postcondition: "The passenger's food and beverage order has been placed and payment processed. The order status is trackable in real time.",
+                    alternateFlow: "If the credit card payment is declined, the system displays an error message and prompts the passenger to re-enter their card details or use a different card."
+                },
+                {
+                    id: 8,
+                    title: "Use Case Scenario 8: Shop Duty-Free Products",
+                    requirements: "(Requirements d.i)",
+                    name: "Browse and Purchase Duty-Free Items",
+                    actor: "Passenger",
+                    precondition: "The passenger is on the home screen, and duty-free shopping is available on this flight.",
+                    mainFlow: [
+                        "The passenger taps Duty-Free Shopping from the home screen.",
+                        "The system displays a catalog of available duty-free products organized by category (e.g., fragrances, electronics, snacks, and gifts).",
+                        "The passenger browses the catalog and taps a product to view its details, including description, price, and available quantities.",
+                        "The passenger taps Add to Cart.",
+                        "The passenger continues browsing and adds additional items as desired.",
+                        "The passenger taps the cart icon to review their selections.",
+                        "The passenger taps Checkout and completes payment using their credit card.",
+                        "The system processes the payment and displays an order confirmation with a receipt."
+                    ],
+                    postcondition: "The duty-free purchase has been completed, and a receipt has been issued to the passenger.",
+                    alternateFlow: "If a product is out of stock, the system indicates Unavailable on the product listing and prevents it from being added to the cart."
+                },
+                {
+                    id: 9,
+                    title: "Use Case Scenario 9: Call a Flight Attendant",
+                    requirements: "(Requirements d.iii)",
+                    name: "Request Flight Attendant Assistance",
+                    actor: "Passenger",
+                    precondition: "The passenger is anywhere in the app and needs assistance.",
+                    mainFlow: [
+                        "The passenger taps the persistent Call Attendant button, which is accessible from any screen in the app.",
+                        "The system sends a service request signal to the flight attendant crew interface.",
+                        "The system displays a confirmation message: Your request has been received. A flight attendant will be with you shortly.",
+                        "The passenger can cancel the request at any time by tapping Cancel Request."
+                    ],
+                    postcondition: "The flight attendant has been notified of the passenger's request for assistance.",
+                    alternateFlow: "If the request cannot be sent due to a system error, the system displays an error message and advises the passenger to use the physical call button on their seat."
+                },
+                {
+                    id: 10,
+                    title: "Use Case Scenario 10: Submit Feedback or Report an Issue",
+                    requirements: "(Requirements d.vi)",
+                    name: "Submit In-Flight Feedback",
+                    actor: "Passenger",
+                    precondition: "The passenger is logged in and has experienced something they want to report or comment on.",
+                    mainFlow: [
+                        "The passenger navigates to Feedback / Report Issue from the app's menu.",
+                        "The system displays a feedback form with fields for category (e.g., App Issue, Service Complaint, General Feedback), a description text field, and an optional rating (1-5 stars).",
+                        "The passenger selects a category, writes a brief description of their feedback, and optionally selects a star rating.",
+                        "The passenger taps Submit.",
+                        "The system records the submission and displays a thank-you message: Thank you for your feedback!"
+                    ],
+                    postcondition: "The passenger's feedback has been submitted and recorded in the system.",
+                    alternateFlow: "If the description field is left empty, the system prompts the passenger to enter at least a brief comment before submitting."
+                }
+            ];
+
+            const ucStyle = {
+                border: '1px solid #e2e8f0',
+                borderRadius: '8px',
+                padding: '1.25rem 1.5rem',
+                marginBottom: '1.5rem',
+                backgroundColor: '#f8fafc'
+            };
+
+            return (
+                <div className="view-container">
+                    <h3>Use Case Scenarios</h3>
+                    <p style={{ color: '#475569', marginBottom: '2rem' }}>
+                        The following use case scenarios describe step-by-step interactions between passengers
+                        and the In-Flight Infotainment System. Each scenario traces a specific user goal through
+                        the system, corresponding to the functional requirements and use case diagrams in Figures 1-4.
+                    </p>
+                    {scenarios.map(sc => (
+                        <div key={sc.id} style={ucStyle}>
+                            <h4 style={{ marginTop: 0, color: '#0f172a' }}>{sc.title}</h4>
+                            <p style={{ color: '#64748b', fontStyle: 'italic', marginTop: '-0.5rem', marginBottom: '1rem' }}>{sc.requirements}</p>
+                            <p><strong>Use Case Name:</strong> {sc.name}</p>
+                            <p><strong>Actor:</strong> {sc.actor}</p>
+                            <p><strong>Precondition:</strong> {sc.precondition}</p>
+                            <div style={{ marginBottom: '0.75rem' }}>
+                                <strong>Main Flow:</strong>
+                                <ol style={{ margin: '0.4rem 0 0 1.25rem', padding: 0, color: '#334155', lineHeight: '1.7' }}>
+                                    {sc.mainFlow.map((step, i) => (
+                                        <li key={i} style={{ marginBottom: '0.25rem' }}>{step}</li>
+                                    ))}
+                                </ol>
+                            </div>
+                            <p><strong>Postcondition:</strong> {sc.postcondition}</p>
+                            {sc.alternateFlow && (
+                                <p><strong>Alternate Flow:</strong> {sc.alternateFlow}</p>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
         function ServicesView() { return <div className="view-container"><h3>Passenger Services</h3><p>[Team Member Section: Implement phone calls, view invoice, and feedback forms here.]</p></div>; }
         function FlightInfoView() { return <div className="view-container"><h3>Flight Information</h3><p>[Team Member Section: Implement real-time tracking map, altitude, speed, and crew message logs here.]</p></div>; }
 
@@ -956,6 +1186,7 @@
                         {currentView === 'shop' && <ShopView />}
                         {currentView === 'services' && <ServicesView />}
                         {currentView === 'flight-info' && <FlightInfoView />}
+                        {currentView === 'use-cases' && <UseCaseScenariosView />}
                     </main>
 
                     <footer className="app-bottom-footer">
