@@ -580,6 +580,43 @@
             border-top: 1px dashed #cbd5e1;
             margin: 0.5rem 0;
         }
+
+        /* --- Flight Info View --- */
+        .flight-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .flight-stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; text-align: center; }
+        .flight-stat-label { font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+        .flight-stat-value { font-size: 1.4rem; font-weight: 700; color: #1e293b; }
+        .flight-map { background: linear-gradient(135deg, #1e40af 0%, #0ea5e9 50%, #1e40af 100%); border-radius: 10px; height: 180px; position: relative; overflow: hidden; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; }
+        .flight-map-path { position: absolute; top: 50%; left: 10%; right: 10%; height: 2px; background: rgba(255,255,255,0.4); transform: translateY(-50%); }
+        .flight-map-plane { position: absolute; font-size: 1.8rem; top: 50%; left: 55%; transform: translate(-50%, -50%); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        .flight-map-origin, .flight-map-dest { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-weight: 700; font-size: 0.85rem; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+        .flight-map-origin { left: 6%; }
+        .flight-map-dest { right: 6%; }
+        .flight-tab-bar { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap; }
+        .flight-tab { background: none; border: none; padding: 0.6rem 1rem; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; font-size: 0.9rem; }
+        .flight-tab.active { color: #1e293b; border-bottom-color: #1e293b; }
+        .announcement-item { border-left: 4px solid #3b82f6; padding: 0.75rem 1rem; margin-bottom: 0.75rem; background: #f8fafc; border-radius: 0 6px 6px 0; }
+        .announcement-time { font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.25rem; }
+        .crew-msg-item { border-left: 4px solid #8b5cf6; padding: 0.75rem 1rem; margin-bottom: 0.75rem; background: #faf5ff; border-radius: 0 6px 6px 0; }
+        .safety-card { display: flex; align-items: flex-start; gap: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; background: #fff; }
+        .safety-icon { font-size: 2rem; flex-shrink: 0; }
+        .safety-title { font-weight: 700; margin-bottom: 0.25rem; }
+        .safety-desc { color: #64748b; font-size: 0.9rem; line-height: 1.5; }
+        /* --- Services View --- */
+        .services-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .service-tab-btn { background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 6px; padding: 0.5rem 1rem; font-weight: 600; font-size: 0.9rem; cursor: pointer; color: #334155; }
+        .service-tab-btn.active { background: #1e293b; border-color: #1e293b; color: white; }
+        .feedback-form { max-width: 480px; display: flex; flex-direction: column; gap: 1rem; }
+        .feedback-form select, .feedback-form textarea { width: 100%; padding: 0.6rem 0.75rem; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 0.95rem; box-sizing: border-box; font-family: inherit; background: white; }
+        .feedback-form textarea { resize: vertical; min-height: 100px; }
+        .star-rating { display: flex; gap: 0.5rem; font-size: 1.6rem; cursor: pointer; }
+        .submit-btn { background-color: #1e293b; color: white; border: none; border-radius: 6px; padding: 0.7rem 1.5rem; font-weight: 600; font-size: 0.95rem; cursor: pointer; align-self: flex-start; }
+        .submit-btn:hover { background-color: #334155; }
+        .success-banner { background: #dcfce7; border: 1px solid #86efac; color: #166534; border-radius: 6px; padding: 0.75rem 1rem; font-weight: 600; margin-bottom: 1rem; }
+        .phone-form { max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
+        .invoice-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; max-width: 420px; }
+        .invoice-header { text-align: center; border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.75rem; margin-bottom: 0.75rem; }
+        .invoice-row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.2rem 0; color: #334155; }
     </style>
 </head>
 <body>
@@ -912,8 +949,216 @@
                 </div>
             );
         }
-        function ServicesView() { return <div className="view-container"><h3>Passenger Services</h3><p>[Team Member Section: Implement phone calls, view invoice, and feedback forms here.]</p></div>; }
-        function FlightInfoView() { return <div className="view-container"><h3>Flight Information</h3><p>[Team Member Section: Implement real-time tracking map, altitude, speed, and crew message logs here.]</p></div>; }
+        // --- Flight Info View ---
+        function FlightInfoView() {
+            const [activeTab, setActiveTab] = React.useState('dashboard');
+            const flightData = {
+                origin: 'JFK', originCity: 'New York',
+                destination: 'LAX', destCity: 'Los Angeles',
+                altitude: '35,000 ft', speed: '547 mph',
+                eta: '2h 14m', localTimeDep: '3:42 PM EST', localTimeArr: '6:56 PM PST', progress: 55
+            };
+            const announcements = [
+                { time: '2:15 PM', from: 'Captain', msg: 'We have reached cruising altitude of 35,000 ft. Weather at destination is clear, 72°F. Enjoy the flight!' },
+                { time: '1:30 PM', from: 'Flight Crew', msg: 'We are now passing through light turbulence. Please fasten your seatbelts.' },
+                { time: '12:55 PM', from: 'Captain', msg: 'Welcome aboard Flight 472 to Los Angeles. Estimated flight time is 5 hours 10 minutes.' },
+            ];
+            const crewMessages = [
+                { time: '2:30 PM', from: 'Flight Attendant', msg: 'Beverage service will begin shortly. We offer complimentary soft drinks, juice, and water.' },
+                { time: '1:45 PM', from: 'Flight Attendant', msg: 'Meal service has concluded. If you need anything, please press the call button.' },
+                { time: '1:10 PM', from: 'Captain', msg: 'Seatbelt sign has been turned off. You are free to move about the cabin.' },
+            ];
+            const safetyItems = [
+                { icon: '🚪', title: 'Emergency Exits', desc: 'There are 6 emergency exits: 2 at the front, 2 over the wings, and 2 at the rear. Exit rows are marked with illuminated signs.' },
+                { icon: '🦺', title: 'Life Vest', desc: 'A life vest is located under your seat. In a water landing, pull the red tab to inflate after exiting the aircraft.' },
+                { icon: '😷', title: 'Oxygen Mask', desc: 'If cabin pressure drops, oxygen masks will fall from overhead. Pull the mask toward you, place over nose and mouth, and breathe normally.' },
+                { icon: '💺', title: 'Brace Position', desc: 'In an emergency landing, lean forward, place hands on the seat in front, and lower your head.' },
+                { icon: '🚭', title: 'No Smoking', desc: 'Smoking is strictly prohibited on all flights including e-cigarettes. This includes the lavatories.' },
+            ];
+            const tabs = [['dashboard','📊 Dashboard'],['map','🗺️ Map'],['announcements','📢 Announcements'],['crew','💬 Crew Messages'],['safety','🛡️ Safety']];
+            return (
+                <div className="view-container">
+                    <h3>✈️ Flight Information</h3>
+                    <div className="flight-tab-bar">
+                        {tabs.map(([id, label]) => (
+                            <button key={id} className={`flight-tab ${activeTab === id ? 'active' : ''}`} onClick={() => setActiveTab(id)}>{label}</button>
+                        ))}
+                    </div>
+                    {activeTab === 'dashboard' && (
+                        <div className="flight-dashboard">
+                            <div className="flight-stat-card"><div className="flight-stat-label">✈️ Route</div><div className="flight-stat-value">{flightData.origin} → {flightData.destination}</div></div>
+                            <div className="flight-stat-card"><div className="flight-stat-label">⏱️ ETA</div><div className="flight-stat-value">{flightData.eta}</div></div>
+                            <div className="flight-stat-card"><div className="flight-stat-label">📡 Altitude</div><div className="flight-stat-value">{flightData.altitude}</div></div>
+                            <div className="flight-stat-card"><div className="flight-stat-label">💨 Speed</div><div className="flight-stat-value">{flightData.speed}</div></div>
+                            <div className="flight-stat-card"><div className="flight-stat-label">🕐 Dep. Local Time</div><div className="flight-stat-value" style={{fontSize:'1rem'}}>{flightData.localTimeDep}</div></div>
+                            <div className="flight-stat-card"><div className="flight-stat-label">🕔 Arr. Local Time</div><div className="flight-stat-value" style={{fontSize:'1rem'}}>{flightData.localTimeArr}</div></div>
+                        </div>
+                    )}
+                    {activeTab === 'map' && (
+                        <div>
+                            <div className="flight-map">
+                                <div className="flight-map-path"></div>
+                                <div className="flight-map-origin">{flightData.origin}<br/><span style={{fontSize:'0.7rem',opacity:0.8}}>{flightData.originCity}</span></div>
+                                <div className="flight-map-plane">✈️</div>
+                                <div className="flight-map-dest">{flightData.destination}<br/><span style={{fontSize:'0.7rem',opacity:0.8}}>{flightData.destCity}</span></div>
+                            </div>
+                            <p style={{color:'#64748b', textAlign:'center'}}>Flight progress: approximately {flightData.progress}% complete</p>
+                        </div>
+                    )}
+                    {activeTab === 'announcements' && (
+                        <div>
+                            <p style={{color:'#64748b', marginBottom:'1rem'}}>All announcements from the flight deck and crew:</p>
+                            {announcements.map((a, i) => (
+                                <div key={i} className="announcement-item"><div className="announcement-time">{a.time} — {a.from}</div><div>{a.msg}</div></div>
+                            ))}
+                        </div>
+                    )}
+                    {activeTab === 'crew' && (
+                        <div>
+                            <p style={{color:'#64748b', marginBottom:'1rem'}}>Text transcript of all crew messages (accessibility support for deaf passengers):</p>
+                            {crewMessages.map((m, i) => (
+                                <div key={i} className="crew-msg-item"><div className="announcement-time">{m.time} — {m.from}</div><div>{m.msg}</div></div>
+                            ))}
+                        </div>
+                    )}
+                    {activeTab === 'safety' && (
+                        <div>
+                            <p style={{color:'#64748b', marginBottom:'1rem'}}>Important safety information for this flight:</p>
+                            {safetyItems.map((s, i) => (
+                                <div key={i} className="safety-card"><div className="safety-icon">{s.icon}</div><div><div className="safety-title">{s.title}</div><div className="safety-desc">{s.desc}</div></div></div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // --- Passenger Services View ---
+        function ServicesView() {
+            const [activeTab, setActiveTab] = React.useState('feedback');
+            const [feedbackForm, setFeedbackForm] = React.useState({ category: '', description: '', rating: 0 });
+            const [feedbackSubmitted, setFeedbackSubmitted] = React.useState(false);
+            const [feedbackError, setFeedbackError] = React.useState('');
+            const [phoneForm, setPhoneForm] = React.useState({ number: '', name: '', cardNumber: '', expiry: '', cvv: '' });
+            const [phoneStage, setPhoneStage] = React.useState('form');
+            const [invoice, setInvoice] = React.useState(null);
+            const [phoneError, setPhoneError] = React.useState('');
+
+            function handleFeedbackSubmit() {
+                if (!feedbackForm.description.trim()) { setFeedbackError('Please enter a description before submitting.'); return; }
+                setFeedbackError(''); setFeedbackSubmitted(true);
+            }
+
+            function handlePhoneSubmit() {
+                setPhoneError('');
+                const digits = phoneForm.cardNumber.replace(/\s/g, '');
+                if (!phoneForm.number || !phoneForm.name || digits.length < 12 || !phoneForm.expiry || !phoneForm.cvv) { setPhoneError('Please fill in all fields correctly.'); return; }
+                if (digits.endsWith('0000')) { setPhoneError('Your card was declined. Please use a different card.'); return; }
+                const duration = Math.floor(Math.random() * 8) + 1;
+                const rate = 1.99;
+                setInvoice({ number: phoneForm.number, duration, rate, total: (duration * rate).toFixed(2), ref: 'CALL-' + Math.floor(100000 + Math.random() * 900000), last4: digits.slice(-4) });
+                setPhoneStage('done');
+            }
+
+            const serviceTabs = [['feedback','📝 Feedback'],['phone','📞 Phone Call'],['invoice','🧾 Invoices']];
+            return (
+                <div className="view-container">
+                    <h3>🛎️ Passenger Services</h3>
+                    <div className="services-tabs">
+                        {serviceTabs.map(([id, label]) => (
+                            <button key={id} className={`service-tab-btn ${activeTab === id ? 'active' : ''}`} onClick={() => setActiveTab(id)}>{label}</button>
+                        ))}
+                    </div>
+
+                    {activeTab === 'feedback' && (
+                        <div>
+                            <h4 style={{marginTop:0}}>Submit Feedback or Report an Issue</h4>
+                            {feedbackSubmitted ? (
+                                <div>
+                                    <div className="success-banner">✅ Thank you for your feedback! Your response has been recorded.</div>
+                                    <button className="submit-btn" onClick={() => { setFeedbackSubmitted(false); setFeedbackForm({ category:'', description:'', rating:0 }); }}>Submit Another</button>
+                                </div>
+                            ) : (
+                                <div className="feedback-form">
+                                    {feedbackError && <div className="payment-error">{feedbackError}</div>}
+                                    <div className="form-field"><label>Category</label>
+                                        <select value={feedbackForm.category} onChange={e => setFeedbackForm(f => ({...f, category: e.target.value}))}>
+                                            <option value="">Select a category...</option>
+                                            <option value="app">App Issue</option>
+                                            <option value="service">Service Complaint</option>
+                                            <option value="food">Food and Beverage</option>
+                                            <option value="general">General Feedback</option>
+                                            <option value="compliment">Compliment</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-field"><label>Description</label>
+                                        <textarea placeholder="Please describe your feedback or issue..." value={feedbackForm.description} onChange={e => setFeedbackForm(f => ({...f, description: e.target.value}))} />
+                                    </div>
+                                    <div className="form-field"><label>Rating (optional)</label>
+                                        <div className="star-rating">
+                                            {[1,2,3,4,5].map(n => (<span key={n} onClick={() => setFeedbackForm(f => ({...f, rating: n}))} style={{opacity: n <= feedbackForm.rating ? 1 : 0.3}}>⭐</span>))}
+                                        </div>
+                                    </div>
+                                    <button className="submit-btn" onClick={handleFeedbackSubmit}>Submit Feedback</button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {activeTab === 'phone' && (
+                        <div>
+                            <h4 style={{marginTop:0}}>Make a Phone Call</h4>
+                            {phoneStage === 'done' && invoice ? (
+                                <div>
+                                    <div className="success-banner">✅ Call connected! Your invoice is below.</div>
+                                    <div className="invoice-box">
+                                        <div className="invoice-header"><strong>📞 Call Invoice</strong><br/><span style={{fontSize:'0.8rem',color:'#64748b'}}>Ref: {invoice.ref}</span></div>
+                                        <div className="invoice-row"><span>Number Dialed</span><span>{invoice.number}</span></div>
+                                        <div className="invoice-row"><span>Duration</span><span>{invoice.duration} min</span></div>
+                                        <div className="invoice-row"><span>Rate</span><span>${invoice.rate}/min</span></div>
+                                        <div style={{borderTop:'1px dashed #cbd5e1',margin:'0.5rem 0'}}></div>
+                                        <div className="invoice-row"><strong>Total Charged</strong><strong>${invoice.total}</strong></div>
+                                        <div className="invoice-row"><span>Card</span><span>**** {invoice.last4}</span></div>
+                                    </div>
+                                    <button className="submit-btn" style={{marginTop:'1rem'}} onClick={() => { setPhoneStage('form'); setPhoneForm({ number:'', name:'', cardNumber:'', expiry:'', cvv:'' }); }}>Make Another Call</button>
+                                </div>
+                            ) : (
+                                <div className="phone-form">
+                                    <p style={{color:'#64748b',margin:'0 0 0.5rem 0'}}>Rate: $1.99/minute. Payment required before connecting.</p>
+                                    {phoneError && <div className="payment-error">{phoneError}</div>}
+                                    <div className="form-field"><label>Phone Number</label><input type="tel" placeholder="+1 (555) 000-0000" value={phoneForm.number} onChange={e => setPhoneForm(f => ({...f, number: e.target.value}))} /></div>
+                                    <div className="form-field"><label>Name on Card</label><input type="text" placeholder="Jane Doe" value={phoneForm.name} onChange={e => setPhoneForm(f => ({...f, name: e.target.value}))} /></div>
+                                    <div className="form-field"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242" value={phoneForm.cardNumber} onChange={e => setPhoneForm(f => ({...f, cardNumber: e.target.value}))} /></div>
+                                    <div className="form-row">
+                                        <div className="form-field"><label>Expiry</label><input type="text" placeholder="MM/YY" value={phoneForm.expiry} onChange={e => setPhoneForm(f => ({...f, expiry: e.target.value}))} /></div>
+                                        <div className="form-field"><label>CVV</label><input type="text" placeholder="123" value={phoneForm.cvv} onChange={e => setPhoneForm(f => ({...f, cvv: e.target.value}))} /></div>
+                                    </div>
+                                    <button className="submit-btn" onClick={handlePhoneSubmit}>Connect Call</button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {activeTab === 'invoice' && (
+                        <div>
+                            <h4 style={{marginTop:0}}>My Invoices</h4>
+                            {invoice ? (
+                                <div className="invoice-box">
+                                    <div className="invoice-header"><strong>📞 Phone Call</strong><br/><span style={{fontSize:'0.8rem',color:'#64748b'}}>Ref: {invoice.ref}</span></div>
+                                    <div className="invoice-row"><span>Number Dialed</span><span>{invoice.number}</span></div>
+                                    <div className="invoice-row"><span>Duration</span><span>{invoice.duration} min</span></div>
+                                    <div style={{borderTop:'1px dashed #cbd5e1',margin:'0.5rem 0'}}></div>
+                                    <div className="invoice-row"><strong>Total</strong><strong>${invoice.total}</strong></div>
+                                </div>
+                            ) : (
+                                <p style={{color:'#64748b'}}>No invoices yet. Make a phone call to see your charges here.</p>
+                            )}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
 
         // --- Main App Functionality ---
         function App() {
