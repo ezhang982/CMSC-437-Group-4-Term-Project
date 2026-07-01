@@ -713,6 +713,163 @@
             color: #94a3b8;
             font-size: 0.82rem;
         }
+
+        /* --- TV Shows View --- */
+        .shows-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .shows-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .shows-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .shows-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .show-summary-pill {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 999px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .shows-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .show-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+
+        .show-card:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        .show-card.selected {
+            border-color: #1e293b;
+            box-shadow: 0 0 0 2px rgba(30, 41, 59, 0.12);
+        }
+
+        .show-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .show-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #0f172a;
+        }
+
+        .show-meta {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+        }
+
+        .show-desc {
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .show-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .show-btn {
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .show-btn.primary {
+            background: #1e293b;
+            color: white;
+        }
+
+        .show-btn.primary:hover {
+            background: #334155;
+        }
+
+        .show-btn.secondary {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #e2e8f0;
+        }
+
+        .show-btn.active {
+            background: #f59e0b;
+            color: white;
+            border-color: #f59e0b;
+        }
+
+        .show-detail {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.1rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .show-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .show-detail-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0.15rem 0 0.25rem 0;
+        }
+
+        .show-detail-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
         /* --- Flight Info View --- */
         .flight-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
         .flight-stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; text-align: center; }
@@ -778,7 +935,134 @@
 
         // Functions for each page, where their contents will be implemented
         function MoviesView() { return <div className="view-container"><h3>Movies Catalog</h3><p>[Team Member Section: Implement browsing, metadata, and playback streaming error flows here.]</p></div>; }
-        function ShowsView() { return <div className="view-container"><h3>TV Shows Catalog</h3><p>[Team Member Section: Implement catalog and favoriting/bookmarking functionality here.]</p></div>; }
+
+        const TV_SHOWS = [
+            {
+                id: 'show-1',
+                title: 'TV Show 1',
+                genre: 'Drama',
+                season: 'Season 2',
+                episodes: 12,
+                duration: '45 min',
+                status: 'New Episode',
+                description: 'Drama series about a crew facing a mystery in the sky.',
+                fullDescription: 'A drama series about a crew facing a mystery in the sky while managing personal and professional challenges.'
+            },
+            {
+                id: 'show-2',
+                title: 'TV Show 2',
+                genre: 'Comedy',
+                season: 'Season 1',
+                episodes: 8,
+                duration: '30 min',
+                status: 'Trending',
+                description: 'Comedy series about a lively crew keeping the cabin running.',
+                fullDescription: 'A comedy series about a lively crew keeping the cabin running with humor, heart, and memorable travel mishaps.'
+            },
+            {
+                id: 'show-3',
+                title: 'TV Show 3',
+                genre: 'Sci-Fi',
+                season: 'Season 3',
+                episodes: 10,
+                duration: '50 min',
+                status: 'Returning',
+                description: 'Sci-fi series about exploring distant worlds and new discoveries.',
+                fullDescription: 'A sci-fi series about exploring distant worlds and new discoveries while uncovering a deeper mystery along the way.'
+            },
+            {
+                id: 'show-4',
+                title: 'TV Show 4',
+                genre: 'Family',
+                season: 'Season 4',
+                episodes: 14,
+                duration: '35 min',
+                status: 'Family Favorite',
+                description: 'Family series about a trip filled with heartwarming adventures.',
+                fullDescription: 'A family series about a trip filled with heartwarming adventures, gentle humor, and everyday lessons.'
+            }
+        ];
+
+        function ShowsView() {
+            const [activeGenre, setActiveGenre] = useState('All');
+            const [selectedShowId, setSelectedShowId] = useState(TV_SHOWS[0].id);
+            const [bookmarkedShows, setBookmarkedShows] = useState(['show-2']);
+
+            const filteredShows = activeGenre === 'All'
+                ? TV_SHOWS
+                : TV_SHOWS.filter(show => show.genre === activeGenre);
+
+            const selectedShow = TV_SHOWS.find(show => show.id === selectedShowId) || filteredShows[0] || TV_SHOWS[0];
+
+            function toggleBookmark(showId) {
+                setBookmarkedShows(prev =>
+                    prev.includes(showId)
+                        ? prev.filter(id => id !== showId)
+                        : [...prev, showId]
+                );
+            }
+
+            return (
+                <div className="view-container">
+                    <h3>TV Shows Catalog</h3>
+                    <p style={{ color: '#64748b', marginTop: '-0.5rem' }}>Browse by genre and save your favorites for later.</p>
+
+                    <div className="shows-layout">
+                        <div className="shows-toolbar">
+                            <div className="shows-filters">
+                                {['All', 'Drama', 'Comedy', 'Sci-Fi', 'Family'].map(genre => (
+                                    <button
+                                        key={genre}
+                                        className={`service-tab-btn ${activeGenre === genre ? 'active' : ''}`}
+                                        onClick={() => setActiveGenre(genre)}
+                                    >
+                                        {genre}
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="shows-summary">
+                                <div className="show-summary-pill">Saved: {bookmarkedShows.length}</div>
+                            </div>
+                        </div>
+
+                        <div className="shows-grid">
+                            {filteredShows.map(show => {
+                                const isBookmarked = bookmarkedShows.includes(show.id);
+                                return (
+                                    <div key={show.id} className={`show-card ${selectedShowId === show.id ? 'selected' : ''}`}>
+                                        <div className="show-card-top">
+                                            <div>
+                                                <div className="show-title">{show.title}</div>
+                                            </div>
+                                        </div>
+                                        <div className="show-desc">{show.description}</div>
+                                        <div className="show-actions">
+                                            <button className="show-btn primary" onClick={() => setSelectedShowId(show.id)}>Details</button>
+                                            <button className={`show-btn secondary ${isBookmarked ? 'active' : ''}`} onClick={() => toggleBookmark(show.id)}>
+                                                {isBookmarked ? '★ Saved' : '☆ Save'}
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        <div className="show-detail">
+                            <div className="show-detail-header">
+                                <div>
+                                    <h4 className="show-detail-title">Now viewing: {selectedShow.title}</h4>
+                                </div>
+                                <button className={`show-btn ${bookmarkedShows.includes(selectedShow.id) ? 'active' : 'secondary'}`} onClick={() => toggleBookmark(selectedShow.id)}>
+                                    {bookmarkedShows.includes(selectedShow.id) ? '★ Bookmarked' : '☆ Bookmark'}
+                                </button>
+                            </div>
+                            <p style={{ color: '#475569', lineHeight: 1.6, margin: 0 }}>{selectedShow.fullDescription}</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         const MUSIC_ALBUMS = [
             {
                 id: 'al1', title: 'Album 1', artist: 'Artist 1',
