@@ -581,6 +581,138 @@
             margin: 0.5rem 0;
         }
 
+        /* --- Entertainment / Music View --- */
+        .ent-layout {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .ent-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 160px;
+            flex-shrink: 0;
+        }
+
+        .ent-cat-btn {
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.6rem 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #334155;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .ent-cat-btn:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .ent-cat-btn.active {
+            background-color: #1e293b;
+            border-color: #1e293b;
+            color: white;
+        }
+
+        .ent-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ent-control-btn {
+            background-color: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ent-control-btn:hover {
+            background-color: rgba(255,255,255,0.28);
+        }
+
+        .music-now-playing {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .music-now-art {
+            width: 56px;
+            height: 56px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .music-now-info {
+            flex: 1;
+        }
+
+        .music-now-title {
+            font-weight: 600;
+        }
+
+        .music-now-artist {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        .music-track-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .music-track-row:hover {
+            background-color: #f8fafc;
+        }
+
+        .music-track-row.playing {
+            background-color: #eff6ff;
+        }
+
+        .music-track-num {
+            width: 24px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .music-track-name {
+            flex: 1;
+            font-size: 0.92rem;
+        }
+
+        .music-track-duration {
+            color: #94a3b8;
+            font-size: 0.82rem;
+        }
         /* --- Flight Info View --- */
         .flight-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
         .flight-stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; text-align: center; }
@@ -647,7 +779,132 @@
         // Functions for each page, where their contents will be implemented
         function MoviesView() { return <div className="view-container"><h3>Movies Catalog</h3><p>[Team Member Section: Implement browsing, metadata, and playback streaming error flows here.]</p></div>; }
         function ShowsView() { return <div className="view-container"><h3>TV Shows Catalog</h3><p>[Team Member Section: Implement catalog and favoriting/bookmarking functionality here.]</p></div>; }
-        function MusicView() { return <div className="view-container"><h3>Music Playlists</h3><p>[Team Member Section: Implement curated playlists and music selections here.]</p></div>; }
+        const MUSIC_ALBUMS = [
+            {
+                id: 'al1', title: 'Album 1', artist: 'Artist 1',
+                tracks: [
+                    { name: 'Song 1', duration: '3:24', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+                    { name: 'Song 2', duration: '4:02', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+                    { name: 'Song 3', duration: '2:58', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+                    { name: 'Song 4', duration: '3:41', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
+                ]
+            },
+            {
+                id: 'al2', title: 'Album 2', artist: 'Artist 2',
+                tracks: [
+                    { name: 'Song 5', duration: '3:12', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' },
+                    { name: 'Song 6', duration: '3:55', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3' },
+                    { name: 'Song 7', duration: '4:18', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3' },
+                ]
+            },
+            {
+                id: 'al3', title: 'Album 3', artist: 'Artist 3',
+                tracks: [
+                    { name: 'Song 8', duration: '3:33', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3' },
+                    { name: 'Song 9', duration: '4:09', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3' },
+                    { name: 'Song 10', duration: '3:47', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3' },
+                    { name: 'Song 11', duration: '5:02', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3' },
+                ]
+            },
+            {
+                id: 'al4', title: 'Album 4', artist: 'Artist 4',
+                tracks: [
+                    { name: 'Song 12', duration: '2:51', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3' },
+                    { name: 'Song 13', duration: '3:19', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3' },
+                    { name: 'Song 14', duration: '3:05', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3' },
+                ]
+            },
+        ];
+
+        function MusicView() {
+            const [selectedAlbumId, setSelectedAlbumId] = useState(MUSIC_ALBUMS[0].id);
+            const [playingTrack, setPlayingTrack] = useState(null);
+            const [isPaused, setIsPaused] = useState(false);
+            const audioRef = React.useRef(null);
+
+            React.useEffect(() => {
+                if (playingTrack && audioRef.current) {
+                    audioRef.current.src = playingTrack.audio || '';
+                    audioRef.current.play().catch(() => {});
+                }
+            }, [playingTrack]);
+
+            const selectedAlbum = MUSIC_ALBUMS.find(album => album.id === selectedAlbumId);
+
+            function playTrack(album, track) {
+                setPlayingTrack({ albumId: album.id, trackName: track.name, artist: album.artist, cover: album.cover, audio: track.audio });
+                setIsPaused(false);
+            }
+
+            function togglePlayback() {
+                if (!audioRef.current) return;
+                if (audioRef.current.paused) {
+                    audioRef.current.play().catch(() => {});
+                } else {
+                    audioRef.current.pause();
+                }
+            }
+
+            return (
+                <div className="view-container">
+                    <h3>Music Playlists</h3>
+                    <p style={{ color: '#64748b', marginTop: '-0.5rem' }}>Curated albums and playlists for this flight.</p>
+
+                    {playingTrack && (
+                        <div className="music-now-playing">
+                            <div className="music-now-art">{playingTrack.cover}</div>
+                            <div className="music-now-info">
+                                <div className="music-now-title">{playingTrack.trackName}</div>
+                                <div className="music-now-artist">{playingTrack.artist}</div>
+                                <audio
+                                    ref={audioRef}
+                                    controls
+                                    autoPlay
+                                    style={{ width: '100%', marginTop: '0.75rem' }}
+                                    onPlay={() => setIsPaused(false)}
+                                    onPause={() => setIsPaused(true)}
+                                />
+                            </div>
+                            <button className="ent-control-btn" style={{ backgroundColor: '#e2e8f0', color: '#1e293b' }} onClick={togglePlayback}>
+                                {isPaused ? 'Play' : 'Pause'}
+                            </button>
+                        </div>
+                    )}
+
+                    <div className="ent-layout">
+                        <div className="ent-sidebar">
+                            {MUSIC_ALBUMS.map(album => (
+                                <button
+                                    key={album.id}
+                                    className={`ent-cat-btn ${selectedAlbumId === album.id ? 'active' : ''}`}
+                                    onClick={() => setSelectedAlbumId(album.id)}
+                                >
+                                    {album.cover} {album.title}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="ent-main">
+                            <h4 style={{ marginBottom: '0.25rem' }}>{selectedAlbum.title}</h4>
+                            <div style={{ color: '#64748b', fontSize: '0.88rem', marginBottom: '1rem' }}>{selectedAlbum.artist}</div>
+                            {selectedAlbum.tracks.map((track, idx) => {
+                                const isPlaying = playingTrack && playingTrack.albumId === selectedAlbum.id && playingTrack.trackName === track.name;
+                                return (
+                                    <div
+                                        key={track.name}
+                                        className={`music-track-row ${isPlaying ? 'playing' : ''}`}
+                                        onClick={() => playTrack(selectedAlbum, track)}
+                                    >
+                                        <div className="music-track-num">{isPlaying && !isPaused ? 'Playing' : idx + 1}</div>
+                                        <div className="music-track-name">{track.name}</div>
+                                        <div className="music-track-duration">{track.duration}</div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
         // --- Duty-Free Shop Data ---
         const FRAGRANCE_PHOTO = 'assets/duty-free/fragrance.jpg';
 
