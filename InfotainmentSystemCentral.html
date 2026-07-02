@@ -1084,7 +1084,19 @@
                                         <div className="show-actions">
                                             <button className="show-btn primary" onClick={() => setSelectedShowId(show.id)}>Details</button>
                                             <button className={`show-btn secondary ${isBookmarked ? 'active' : ''}`} onClick={() => toggleBookmark(show.id)}>
-                                                {isBookma        // --- Movies View ---
+                                                {isBookmarked ? '★ Saved' : '☆ Save'}
+                                            </button>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                );
+            }
+
+
+        // --- Movies View ---
         function MoviesView() {
             const MOVIES = [
                 { id: 1, emoji: '🚀', title: 'Galactic Voyage', genre: 'Sci-Fi', year: 2023, duration: '2h 14m', rating: 4.7, cast: 'A. Carter, J. Moon', synopsis: 'A crew of astronauts embarks on a daring mission to the edge of the known galaxy, confronting the unknown and each other.' },
@@ -1248,7 +1260,8 @@
                     )}
                 </div>
             );
-        }  );
+        }
+        );
                             })}
                         </div>
 
