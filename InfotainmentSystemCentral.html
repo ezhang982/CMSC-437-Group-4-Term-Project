@@ -981,121 +981,6 @@
         // Functions for each page, where their contents will be implemented
 
 
-        const TV_SHOWS = [
-            {
-                id: 'show-1',
-                title: 'TV Show 1',
-                genre: 'Drama',
-                season: 'Season 2',
-                episodes: 12,
-                duration: '45 min',
-                status: 'New Episode',
-                description: 'Drama series about a crew facing a mystery in the sky.',
-                fullDescription: 'A drama series about a crew facing a mystery in the sky while managing personal and professional challenges.'
-            },
-            {
-                id: 'show-2',
-                title: 'TV Show 2',
-                genre: 'Comedy',
-                season: 'Season 1',
-                episodes: 8,
-                duration: '30 min',
-                status: 'Trending',
-                description: 'Comedy series about a lively crew keeping the cabin running.',
-                fullDescription: 'A comedy series about a lively crew keeping the cabin running with humor, heart, and memorable travel mishaps.'
-            },
-            {
-                id: 'show-3',
-                title: 'TV Show 3',
-                genre: 'Sci-Fi',
-                season: 'Season 3',
-                episodes: 10,
-                duration: '50 min',
-                status: 'Returning',
-                description: 'Sci-fi series about exploring distant worlds and new discoveries.',
-                fullDescription: 'A sci-fi series about exploring distant worlds and new discoveries while uncovering a deeper mystery along the way.'
-            },
-            {
-                id: 'show-4',
-                title: 'TV Show 4',
-                genre: 'Family',
-                season: 'Season 4',
-                episodes: 14,
-                duration: '35 min',
-                status: 'Family Favorite',
-                description: 'Family series about a trip filled with heartwarming adventures.',
-                fullDescription: 'A family series about a trip filled with heartwarming adventures, gentle humor, and everyday lessons.'
-            }
-        ];
-
-        function ShowsView() {
-            const [activeGenre, setActiveGenre] = useState('All');
-            const [selectedShowId, setSelectedShowId] = useState(TV_SHOWS[0].id);
-            const [bookmarkedShows, setBookmarkedShows] = useState(['show-2']);
-
-            const filteredShows = activeGenre === 'All'
-                ? TV_SHOWS
-                : TV_SHOWS.filter(show => show.genre === activeGenre);
-
-            const selectedShow = TV_SHOWS.find(show => show.id === selectedShowId) || filteredShows[0] || TV_SHOWS[0];
-
-            function toggleBookmark(showId) {
-                setBookmarkedShows(prev =>
-                    prev.includes(showId)
-                        ? prev.filter(id => id !== showId)
-                        : [...prev, showId]
-                );
-            }
-
-            return (
-                <div className="view-container">
-                    <h3>TV Shows Catalog</h3>
-                    <p style={{ color: '#64748b', marginTop: '-0.5rem' }}>Browse by genre and save your favorites for later.</p>
-
-                    <div className="shows-layout">
-                        <div className="shows-toolbar">
-                            <div className="shows-filters">
-                                {['All', 'Drama', 'Comedy', 'Sci-Fi', 'Family'].map(genre => (
-                                    <button
-                                        key={genre}
-                                        className={`service-tab-btn ${activeGenre === genre ? 'active' : ''}`}
-                                        onClick={() => setActiveGenre(genre)}
-                                    >
-                                        {genre}
-                                    </button>
-                                ))}
-                            </div>
-                            <div className="shows-summary">
-                                <div className="show-summary-pill">Saved: {bookmarkedShows.length}</div>
-                            </div>
-                        </div>
-
-                        <div className="shows-grid">
-                            {filteredShows.map(show => {
-                                const isBookmarked = bookmarkedShows.includes(show.id);
-                                return (
-                                    <div key={show.id} className={`show-card ${selectedShowId === show.id ? 'selected' : ''}`}>
-                                        <div className="show-card-top">
-                                            <div>
-                                                <div className="show-title">{show.title}</div>
-                                            </div>
-                                        </div>
-                                        <div className="show-desc">{show.description}</div>
-                                        <div className="show-actions">
-                                            <button className="show-btn primary" onClick={() => setSelectedShowId(show.id)}>Details</button>
-                                            <button className={`show-btn secondary ${isBookmarked ? 'active' : ''}`} onClick={() => toggleBookmark(show.id)}>
-                                                {isBookmarked ? '★ Saved' : '☆ Save'}
-                                            </button>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )}
-                    </div>
-                );
-            }
-
-
         // --- Movies View ---
         function MoviesView() {
             const MOVIES = [
@@ -1261,6 +1146,120 @@
                 </div>
             );
         }
+
+        const TV_SHOWS = [
+            {
+                id: 'show-1',
+                title: 'TV Show 1',
+                genre: 'Drama',
+                season: 'Season 2',
+                episodes: 12,
+                duration: '45 min',
+                status: 'New Episode',
+                description: 'Drama series about a crew facing a mystery in the sky.',
+                fullDescription: 'A drama series about a crew facing a mystery in the sky while managing personal and professional challenges.'
+            },
+            {
+                id: 'show-2',
+                title: 'TV Show 2',
+                genre: 'Comedy',
+                season: 'Season 1',
+                episodes: 8,
+                duration: '30 min',
+                status: 'Trending',
+                description: 'Comedy series about a lively crew keeping the cabin running.',
+                fullDescription: 'A comedy series about a lively crew keeping the cabin running with humor, heart, and memorable travel mishaps.'
+            },
+            {
+                id: 'show-3',
+                title: 'TV Show 3',
+                genre: 'Sci-Fi',
+                season: 'Season 3',
+                episodes: 10,
+                duration: '50 min',
+                status: 'Returning',
+                description: 'Sci-fi series about exploring distant worlds and new discoveries.',
+                fullDescription: 'A sci-fi series about exploring distant worlds and new discoveries while uncovering a deeper mystery along the way.'
+            },
+            {
+                id: 'show-4',
+                title: 'TV Show 4',
+                genre: 'Family',
+                season: 'Season 4',
+                episodes: 14,
+                duration: '35 min',
+                status: 'Family Favorite',
+                description: 'Family series about a trip filled with heartwarming adventures.',
+                fullDescription: 'A family series about a trip filled with heartwarming adventures, gentle humor, and everyday lessons.'
+            }
+        ];
+
+        function ShowsView() {
+            const [activeGenre, setActiveGenre] = useState('All');
+            const [selectedShowId, setSelectedShowId] = useState(TV_SHOWS[0].id);
+            const [bookmarkedShows, setBookmarkedShows] = useState(['show-2']);
+
+            const filteredShows = activeGenre === 'All'
+                ? TV_SHOWS
+                : TV_SHOWS.filter(show => show.genre === activeGenre);
+
+            const selectedShow = TV_SHOWS.find(show => show.id === selectedShowId) || filteredShows[0] || TV_SHOWS[0];
+
+            function toggleBookmark(showId) {
+                setBookmarkedShows(prev =>
+                    prev.includes(showId)
+                        ? prev.filter(id => id !== showId)
+                        : [...prev, showId]
+                );
+            }
+
+            return (
+                <div className="view-container">
+                    <h3>TV Shows Catalog</h3>
+                    <p style={{ color: '#64748b', marginTop: '-0.5rem' }}>Browse by genre and save your favorites for later.</p>
+
+                    <div className="shows-layout">
+                        <div className="shows-toolbar">
+                            <div className="shows-filters">
+                                {['All', 'Drama', 'Comedy', 'Sci-Fi', 'Family'].map(genre => (
+                                    <button
+                                        key={genre}
+                                        className={`service-tab-btn ${activeGenre === genre ? 'active' : ''}`}
+                                        onClick={() => setActiveGenre(genre)}
+                                    >
+                                        {genre}
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="shows-summary">
+                                <div className="show-summary-pill">Saved: {bookmarkedShows.length}</div>
+                            </div>
+                        </div>
+
+                        <div className="shows-grid">
+                            {filteredShows.map(show => {
+                                const isBookmarked = bookmarkedShows.includes(show.id);
+                                return (
+                                    <div key={show.id} className={`show-card ${selectedShowId === show.id ? 'selected' : ''}`}>
+                                        <div className="show-card-top">
+                                            <div>
+                                                <div className="show-title">{show.title}</div>
+                                            </div>
+                                        </div>
+                                        <div className="show-desc">{show.description}</div>
+                                        <div className="show-actions">
+                                            <button className="show-btn primary" onClick={() => setSelectedShowId(show.id)}>Details</button>
+                                            <button className={`show-btn secondary ${isBookmarked ? 'active' : ''}`} onClick={() => toggleBookmark(show.id)}>
+                                                {isBookmarked ? '★ Saved' : '☆ Save'}
+                                            </button>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                );
+            }
         );
                             })}
                         </div>
